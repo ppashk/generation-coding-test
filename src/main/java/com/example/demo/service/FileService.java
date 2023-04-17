@@ -26,7 +26,7 @@ import static java.nio.file.Files.readAllBytes;
 @RequiredArgsConstructor
 public class FileService {
 
-    //    @Value("${file.name}")
+    @Value("${file.name}")
     private String fileName = "sample.json";
 
     private final ObjectMapper objectMapper;
@@ -85,7 +85,7 @@ public class FileService {
     }
 
     public void deleteFile() throws IOException {
-        File file = getFile();
+        File file = new File(fileName);
 
         checkArgumentCustom(file.exists(), FILE_NOT_FOUND);
 
