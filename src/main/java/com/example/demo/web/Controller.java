@@ -1,5 +1,6 @@
 package com.example.demo.web;
 
+import com.example.demo.model.dto.FileContentDto;
 import com.example.demo.model.dto.FileDto;
 import com.example.demo.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -17,22 +17,19 @@ public class Controller {
 
     private final FileService fileService;
 
-    @PostMapping(value = "/file")
-    public ResponseEntity<String> uploadFile(@RequestBody MultipartFile file) throws IOException {
-        fileService.uploadFile(file);
-        return ResponseEntity.ok("File uploaded successfully");
+    @PostMapping(value = "/file", produces = "application/json")
+    public FileContentDto uploadFile(@RequestBody MultipartFile file) throws IOException {
+        return fileService.uploadFile(file);
     }
 
-    @PutMapping(value = "/file", consumes = "application/json")
-    public ResponseEntity<String> updateFile(@RequestBody FileDto fileDto) throws IOException {
-        fileService.updateFile(fileDto);
-        return ResponseEntity.ok("File updated successfully");
+    @PutMapping(value = "/file", consumes = "application/json", produces = "application/json")
+    public FileContentDto updateFile(@RequestBody FileContentDto fileContentDto) throws IOException {
+        return fileService.updateFile(fileContentDto);
     }
 
-    @GetMapping("/file")
-    public ResponseEntity<Map<String, Integer>> downloadFile() throws IOException {
-        Map<String, Integer> data = fileService.downloadFile();
-        return ResponseEntity.ok(data);
+    @GetMapping(value = "/file", produces = "application/json")
+    public FileDto downloadFile() throws IOException {
+        return fileService.downloadFile();
     }
 
     @DeleteMapping("/file")
