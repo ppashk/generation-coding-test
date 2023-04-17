@@ -4,13 +4,13 @@ import com.example.demo.model.dto.FileContentDto;
 import com.example.demo.model.dto.FileDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,11 +27,12 @@ import static java.nio.file.Files.readAllBytes;
 public class FileService {
 
     @Value("${file.name}")
-    private String fileName = "sample.json";
+    private String fileName;
 
     private final ObjectMapper objectMapper;
 
-    public FileContentDto uploadFile(MultipartFile multipartFile) throws IOException {
+    @SneakyThrows
+    public FileContentDto uploadFile(MultipartFile multipartFile) {
         validateFile(multipartFile);
 
         File file = getFile();
@@ -47,7 +48,7 @@ public class FileService {
         return objectMapper.convertValue(data, FileContentDto.class);
     }
 
-    public FileContentDto updateFile(FileContentDto fileContentDto) throws IOException {
+    public FileContentDto updateFile(FileContentDto fileContentDto) {
         File file = getFile();
 
         checkArgumentCustom(file.exists(), FILE_NOT_FOUND);
@@ -67,7 +68,8 @@ public class FileService {
         return objectMapper.convertValue(data, FileContentDto.class);
     }
 
-    public FileDto downloadFile() throws IOException {
+    @SneakyThrows
+    public FileDto downloadFile() {
         File file = getFile();
 
         checkArgumentCustom(file.exists(), FILE_NOT_FOUND);
@@ -84,7 +86,8 @@ public class FileService {
                 .build();
     }
 
-    public void deleteFile() throws IOException {
+    @SneakyThrows
+    public void deleteFile() {
         File file = new File(fileName);
 
         checkArgumentCustom(file.exists(), FILE_NOT_FOUND);
@@ -92,12 +95,14 @@ public class FileService {
         Files.delete(file.toPath());
     }
 
-    private Map<String, Integer> readJsonFile(File file) throws IOException {
+    @SneakyThrows
+    private Map<String, Integer> readJsonFile(File file) {
         byte[] bytes = readAllBytes(file.toPath());
         return objectMapper.readValue(bytes, HashMap.class);
     }
 
-    private void writeJsonFile(File file, Map<String, Integer> data) throws IOException {
+    @SneakyThrows
+    private void writeJsonFile(File file, Map<String, Integer> data) {
         objectMapper.writeValue(file, data);
     }
 

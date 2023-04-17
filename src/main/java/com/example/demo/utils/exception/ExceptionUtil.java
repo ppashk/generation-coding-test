@@ -10,6 +10,7 @@ import org.springframework.web.client.RestClientResponseException;
 import java.util.Optional;
 import java.util.concurrent.Callable;
 
+import static com.example.demo.model.enums.ErrorEnum.WRONG_DATA_FORMAT;
 import static com.example.demo.utils.java.JavaUtils.isBlank;
 
 @UtilityClass
@@ -32,5 +33,9 @@ public class ExceptionUtil {
                     .map(JsonNode::asText)
                     .orElse("");
         }
+    }
+
+    public static String getErrorMessageForNotReadableException() {
+        return WRONG_DATA_FORMAT.toString();
     }
 }

@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -18,22 +16,22 @@ public class Controller {
     private final FileService fileService;
 
     @PostMapping(value = "/file", produces = "application/json")
-    public FileContentDto uploadFile(@RequestBody MultipartFile file) throws IOException {
+    public FileContentDto uploadFile(@RequestBody MultipartFile file) {
         return fileService.uploadFile(file);
     }
 
     @PutMapping(value = "/file", consumes = "application/json", produces = "application/json")
-    public FileContentDto updateFile(@RequestBody FileContentDto fileContentDto) throws IOException {
+    public FileContentDto updateFile(@RequestBody FileContentDto fileContentDto) {
         return fileService.updateFile(fileContentDto);
     }
 
     @GetMapping(value = "/file", produces = "application/json")
-    public FileDto downloadFile() throws IOException {
+    public FileDto downloadFile() {
         return fileService.downloadFile();
     }
 
     @DeleteMapping("/file")
-    public ResponseEntity<String> deleteFile() throws IOException {
+    public ResponseEntity<String> deleteFile() {
         fileService.deleteFile();
         return ResponseEntity.ok("File deleted successfully");
     }
