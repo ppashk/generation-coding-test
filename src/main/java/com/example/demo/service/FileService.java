@@ -88,7 +88,7 @@ public class FileService {
 
     @SneakyThrows
     public void deleteFile() {
-        File file = new File(fileName);
+        File file = getFile();
 
         checkArgumentCustom(file.exists(), FILE_NOT_FOUND);
 
